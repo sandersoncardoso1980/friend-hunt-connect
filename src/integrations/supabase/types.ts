@@ -14,6 +14,42 @@ export type Database = {
   }
   public: {
     Tables: {
+      ads_carousel: {
+        Row: {
+          created_at: string
+          description: string | null
+          display_order: number | null
+          id: string
+          image_url: string
+          is_active: boolean | null
+          link_url: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          display_order?: number | null
+          id?: string
+          image_url: string
+          is_active?: boolean | null
+          link_url?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          display_order?: number | null
+          id?: string
+          image_url?: string
+          is_active?: boolean | null
+          link_url?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       event_participants: {
         Row: {
           event_id: string
@@ -45,10 +81,13 @@ export type Database = {
       }
       events: {
         Row: {
+          age_group: string | null
+          category: string | null
           created_at: string
           creator_id: string
           current_participants: number | null
           description: string
+          difficulty_level: string | null
           event_date: string
           event_time: string
           id: string
@@ -61,10 +100,13 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          age_group?: string | null
+          category?: string | null
           created_at?: string
           creator_id: string
           current_participants?: number | null
           description: string
+          difficulty_level?: string | null
           event_date: string
           event_time: string
           id?: string
@@ -77,10 +119,13 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          age_group?: string | null
+          category?: string | null
           created_at?: string
           creator_id?: string
           current_participants?: number | null
           description?: string
+          difficulty_level?: string | null
           event_date?: string
           event_time?: string
           id?: string
@@ -93,6 +138,71 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      locations: {
+        Row: {
+          address: string
+          city: string | null
+          created_at: string
+          id: string
+          latitude: number | null
+          longitude: number | null
+          name: string
+          sport_type: string | null
+        }
+        Insert: {
+          address: string
+          city?: string | null
+          created_at?: string
+          id?: string
+          latitude?: number | null
+          longitude?: number | null
+          name: string
+          sport_type?: string | null
+        }
+        Update: {
+          address?: string
+          city?: string | null
+          created_at?: string
+          id?: string
+          latitude?: number | null
+          longitude?: number | null
+          name?: string
+          sport_type?: string | null
+        }
+        Relationships: []
+      }
+      photos: {
+        Row: {
+          created_at: string
+          event_id: string | null
+          id: string
+          uploaded_by: string | null
+          url: string
+        }
+        Insert: {
+          created_at?: string
+          event_id?: string | null
+          id?: string
+          uploaded_by?: string | null
+          url: string
+        }
+        Update: {
+          created_at?: string
+          event_id?: string | null
+          id?: string
+          uploaded_by?: string | null
+          url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "photos_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       profiles: {
         Row: {
@@ -131,6 +241,48 @@ export type Database = {
           full_name?: string
           id?: string
           is_premium?: boolean | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      users: {
+        Row: {
+          age: number | null
+          avatar_url: string | null
+          city: string | null
+          created_at: string
+          email: string
+          favorite_sport: string | null
+          id: string
+          is_premium: boolean | null
+          name: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          age?: number | null
+          avatar_url?: string | null
+          city?: string | null
+          created_at?: string
+          email: string
+          favorite_sport?: string | null
+          id?: string
+          is_premium?: boolean | null
+          name: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          age?: number | null
+          avatar_url?: string | null
+          city?: string | null
+          created_at?: string
+          email?: string
+          favorite_sport?: string | null
+          id?: string
+          is_premium?: boolean | null
+          name?: string
           updated_at?: string
           user_id?: string
         }
