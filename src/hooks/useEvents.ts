@@ -7,12 +7,7 @@ export const useEvents = (city?: string) => {
     queryFn: async () => {
       let query = supabase
         .from("events")
-        .select(`
-          *,
-          profiles:creator_id (
-            full_name
-          )
-        `)
+        .select("*")
         .order("event_date", { ascending: true });
 
       if (city) {

@@ -73,10 +73,7 @@ const Index = () => {
               {events.slice(0, 6).map((event) => (
                 <EventCard
                   key={event.id}
-                  event={{
-                    ...event,
-                    creator: event.profiles
-                  }}
+                  event={event}
                   onClick={() => navigate(`/events/${event.id}`)}
                 />
               ))}
