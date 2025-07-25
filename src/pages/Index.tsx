@@ -5,13 +5,34 @@ import { AdsCarousel } from "@/components/events/AdsCarousel";
 import { BottomNavigation } from "@/components/layout/BottomNavigation";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { MapPin, Plus } from "lucide-react";
+import { MapPin, Plus, LogOut } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 const Index = () => {
   const { user, loading: authLoading } = useAuth();
   const { data: events, isLoading: eventsLoading } = useEvents();
   const navigate = useNavigate();
+  const { toast } = useToast();
+
+  const handleLogout = async () => {
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
+      
+      toast({
+        title: "Logout realizado",
+        description: "Você foi desconectado com sucesso.",
+      });
+    } catch (error: any) {
+      toast({
+        title: "Erro no logout",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  };
 
   if (authLoading) {
     return (
@@ -52,9 +73,19 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background pb-20">
       <header className="bg-background border-b p-4">
-        <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-          Hunters
-        </h1>
+        <div className="flex items-center justify-between">
+          <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+            Hunters
+          </h1>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={handleLogout}
+            className="p-2"
+          >
+            <LogOut className="h-4 w-4" />
+          </Button>
+        </div>
       </header>
 
       <main className="container mx-auto p-4 space-y-6">
