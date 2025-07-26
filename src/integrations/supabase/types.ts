@@ -211,25 +211,63 @@ export type Database = {
         }
         Relationships: []
       }
+      photo_likes: {
+        Row: {
+          created_at: string
+          id: string
+          photo_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          photo_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          photo_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "photo_likes_photo_id_fkey"
+            columns: ["photo_id"]
+            isOneToOne: false
+            referencedRelation: "photos"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       photos: {
         Row: {
+          caption: string | null
           created_at: string
           event_id: string | null
           id: string
+          is_profile_photo: boolean | null
+          likes_count: number | null
           uploaded_by: string | null
           url: string
         }
         Insert: {
+          caption?: string | null
           created_at?: string
           event_id?: string | null
           id?: string
+          is_profile_photo?: boolean | null
+          likes_count?: number | null
           uploaded_by?: string | null
           url: string
         }
         Update: {
+          caption?: string | null
           created_at?: string
           event_id?: string | null
           id?: string
+          is_profile_photo?: boolean | null
+          likes_count?: number | null
           uploaded_by?: string | null
           url?: string
         }
@@ -247,41 +285,77 @@ export type Database = {
         Row: {
           age: number | null
           avatar_url: string | null
+          bio: string | null
           city: string | null
           created_at: string
           email: string
           favorite_sport: string | null
+          followers_count: number | null
+          following_count: number | null
           full_name: string
           id: string
           is_premium: boolean | null
+          posts_count: number | null
           updated_at: string
           user_id: string
         }
         Insert: {
           age?: number | null
           avatar_url?: string | null
+          bio?: string | null
           city?: string | null
           created_at?: string
           email: string
           favorite_sport?: string | null
+          followers_count?: number | null
+          following_count?: number | null
           full_name: string
           id?: string
           is_premium?: boolean | null
+          posts_count?: number | null
           updated_at?: string
           user_id: string
         }
         Update: {
           age?: number | null
           avatar_url?: string | null
+          bio?: string | null
           city?: string | null
           created_at?: string
           email?: string
           favorite_sport?: string | null
+          followers_count?: number | null
+          following_count?: number | null
           full_name?: string
           id?: string
           is_premium?: boolean | null
+          posts_count?: number | null
           updated_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      user_connections: {
+        Row: {
+          created_at: string
+          follower_id: string
+          following_id: string
+          id: string
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          follower_id: string
+          following_id: string
+          id?: string
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          follower_id?: string
+          following_id?: string
+          id?: string
+          status?: string
         }
         Relationships: []
       }
