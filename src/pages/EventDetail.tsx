@@ -35,7 +35,7 @@ const EventDetail = () => {
     enabled: !!id,
   });
 
-  const { data: isParticipant } = useQuery({
+  const { data: isParticipant, refetch: refetchParticipant } = useQuery({
     queryKey: ["participant", id, user?.id],
     queryFn: async () => {
       if (!id || !user?.id) return false;
@@ -72,6 +72,7 @@ const EventDetail = () => {
       });
 
       refetch();
+      refetchParticipant();
     } catch (error: any) {
       toast({
         title: "Erro",
