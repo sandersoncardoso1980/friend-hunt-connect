@@ -71,8 +71,10 @@ const Index = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background pb-20">
-      <header className="bg-background border-b p-4">
+    <div className="min-h-screen bg-background pb-20 lg:pb-0 lg:flex">
+      <BottomNavigation />
+      <div className="flex-1">
+        <header className="bg-background border-b p-4">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
             Hunters
@@ -115,9 +117,8 @@ const Index = () => {
             </div>
           )}
         </div>
-      </main>
-
-      <BottomNavigation />
+        </main>
+      </div>
     </div>
   );
 };

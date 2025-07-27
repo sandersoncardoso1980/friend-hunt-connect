@@ -104,8 +104,10 @@ const Profile = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background pb-20">
-      <header className="bg-background border-b p-4">
+    <div className="min-h-screen bg-background pb-20 lg:pb-0 lg:flex">
+      <BottomNavigation />
+      <div className="flex-1">
+        <header className="bg-background border-b p-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Button
@@ -188,10 +190,14 @@ const Profile = () => {
                     <div className="font-semibold">{profile?.following_count || 0}</div>
                     <div className="text-muted-foreground">Seguindo</div>
                   </div>
-                  <div className="text-center">
-                    <div className="font-semibold">{userPhotos?.length || 0}</div>
-                    <div className="text-muted-foreground">Fotos</div>
-                  </div>
+                   <div className="text-center">
+                     <div className="font-semibold">{userPhotos?.length || 0}</div>
+                     <div className="text-muted-foreground">Fotos</div>
+                   </div>
+                   <div className="text-center">
+                     <div className="font-semibold text-primary">{profile?.total_points || 0}</div>
+                     <div className="text-muted-foreground">Pontos</div>
+                   </div>
                 </div>
               </div>
             </div>
@@ -346,9 +352,8 @@ const Profile = () => {
             </Card>
           </TabsContent>
         </Tabs>
-      </main>
-
-      <BottomNavigation />
+        </main>
+      </div>
     </div>
   );
 };

@@ -10,6 +10,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
 import { ArrowLeft, MapPin, Calendar, Clock, Users, Trophy } from "lucide-react";
 import { useState } from "react";
+import { usePoints } from "@/hooks/usePoints";
 
 const EventDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -17,6 +18,8 @@ const EventDetail = () => {
   const { user } = useAuth();
   const { toast } = useToast();
   const [isJoining, setIsJoining] = useState(false);
+  const [isCanceling, setIsCanceling] = useState(false);
+  const { awardJoinPoints, penalizeCancellation } = usePoints();
 
   const { data: event, isLoading, refetch } = useQuery({
     queryKey: ["event", id],
@@ -71,6 +74,9 @@ const EventDetail = () => {
         description: "Você se inscreveu no evento.",
       });
 
+      // Award points for joining
+      await awardJoinPoints(user.id, event.id);
+
       refetch();
       refetchParticipant();
     } catch (error: any) {
@@ -81,6 +87,41 @@ const EventDetail = () => {
       });
     } finally {
       setIsJoining(false);
+    }
+  };
+
+  const handleCancelParticipation = async () => {
+    if (!user || !event) return;
+
+    setIsCanceling(true);
+    try {
+      const { error } = await supabase
+        .from("event_participants")
+        .delete()
+        .eq("event_id", event.id)
+        .eq("user_id", user.id);
+
+      if (error) throw error;
+
+      toast({
+        title: "Participação cancelada",
+        description: "Você cancelou sua participação no evento.",
+      });
+
+      // Apply penalty points
+      const eventDateTime = `${event.event_date}T${event.event_time}`;
+      await penalizeCancellation(user.id, event.id, eventDateTime);
+
+      refetch();
+      refetchParticipant();
+    } catch (error: any) {
+      toast({
+        title: "Erro",
+        description: error.message,
+        variant: "destructive",
+      });
+    } finally {
+      setIsCanceling(false);
     }
   };
 
@@ -122,8 +163,10 @@ const EventDetail = () => {
   const canJoin = user && !isParticipant && !isFull;
 
   return (
-    <div className="min-h-screen bg-background pb-20">
-      <header className="bg-background border-b p-4">
+    <div className="min-h-screen bg-background pb-20 lg:pb-0 lg:flex">
+      <BottomNavigation />
+      <div className="flex-1">
+        <header className="bg-background border-b p-4">
         <div className="flex items-center gap-3">
           <Button
             variant="ghost"
@@ -208,13 +251,21 @@ const EventDetail = () => {
           <Card>
             <CardContent className="pt-6">
               {isParticipant ? (
-                <div className="text-center">
+                <div className="text-center space-y-3">
                   <Badge variant="default" className="mb-2">
                     ✓ Você está inscrito neste evento
                   </Badge>
                   <p className="text-sm text-muted-foreground">
                     Você já está participando deste evento!
                   </p>
+                  <Button
+                    variant="outline"
+                    onClick={handleCancelParticipation}
+                    disabled={isCanceling}
+                    className="w-full"
+                  >
+                    {isCanceling ? "Cancelando..." : "Cancelar Participação"}
+                  </Button>
                 </div>
               ) : isFull ? (
                 <div className="text-center">
@@ -251,9 +302,8 @@ const EventDetail = () => {
             </CardContent>
           </Card>
         )}
-      </main>
-
-      <BottomNavigation />
+        </main>
+      </div>
     </div>
   );
 };
