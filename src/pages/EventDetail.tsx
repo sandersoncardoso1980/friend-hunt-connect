@@ -159,8 +159,13 @@ const EventDetail = () => {
   }
 
   const eventDate = new Date(event.event_date);
+  const eventDateTime = new Date(`${event.event_date}T${event.event_time}`);
+  const now = new Date();
+  const oneHourBeforeEvent = new Date(eventDateTime.getTime() - 60 * 60 * 1000);
+  
   const isFull = event.current_participants >= event.max_participants;
-  const canJoin = user && !isParticipant && !isFull;
+  const isEventSoon = now >= oneHourBeforeEvent;
+  const canJoin = user && !isParticipant && !isFull && !isEventSoon;
 
   return (
     <div className="min-h-screen bg-background pb-20 lg:pb-0 lg:flex">
@@ -274,6 +279,15 @@ const EventDetail = () => {
                   </Badge>
                   <p className="text-sm text-muted-foreground">
                     Este evento já atingiu o número máximo de participantes.
+                  </p>
+                </div>
+              ) : isEventSoon ? (
+                <div className="text-center">
+                  <Badge variant="destructive" className="mb-2">
+                    Inscrições encerradas
+                  </Badge>
+                  <p className="text-sm text-muted-foreground">
+                    As inscrições foram encerradas 1 hora antes do evento.
                   </p>
                 </div>
               ) : (
