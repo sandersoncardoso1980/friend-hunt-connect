@@ -46,9 +46,13 @@ const Index = () => {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 to-secondary/5">
         <div className="text-center space-y-8 p-8">
-          <h1 className="text-5xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-            Hunters
-          </h1>
+          <div className="flex justify-center">
+            <img 
+              src="/lovable-uploads/2c7a07a3-7485-4473-9ef7-fadb019f021d.png" 
+              alt="Hunters Logo" 
+              className="w-24 h-24 object-contain"
+            />
+          </div>
           <p className="text-xl text-muted-foreground max-w-md">
             Conecte-se através do esporte. Descubra eventos incríveis na sua cidade.
           </p>
@@ -76,9 +80,16 @@ const Index = () => {
       <div className="flex-1">
         <header className="bg-background border-b p-4">
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-            Hunters
-          </h1>
+          <div className="flex items-center gap-3">
+            <img 
+              src="/lovable-uploads/2c7a07a3-7485-4473-9ef7-fadb019f021d.png" 
+              alt="Hunters Logo" 
+              className="w-8 h-8 object-contain"
+            />
+            <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+              Hunters
+            </h1>
+          </div>
           <Button
             variant="ghost"
             size="sm"

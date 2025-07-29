@@ -13,9 +13,13 @@ export const AuthLayout = ({ children, title, subtitle }: AuthLayoutProps) => {
       <div className="flex-1 flex items-center justify-center p-8">
         <div className="w-full max-w-md space-y-8">
           <div className="text-center">
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-              Hunters
-            </h1>
+            <div className="flex justify-center mb-4">
+              <img 
+                src="/lovable-uploads/2c7a07a3-7485-4473-9ef7-fadb019f021d.png" 
+                alt="Hunters Logo" 
+                className="w-16 h-16 object-contain"
+              />
+            </div>
             <h2 className="mt-6 text-3xl font-bold text-foreground">
               {title}
             </h2>
@@ -30,8 +34,12 @@ export const AuthLayout = ({ children, title, subtitle }: AuthLayoutProps) => {
       {/* Right side - Visual */}
       <div className="hidden lg:flex flex-1 bg-gradient-to-br from-primary/10 to-secondary/10 items-center justify-center p-8">
         <div className="text-center space-y-6">
-          <div className="w-24 h-24 mx-auto bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center">
-            <span className="text-3xl">🏃‍♂️</span>
+          <div className="w-32 h-32 mx-auto flex items-center justify-center">
+            <img 
+              src="/lovable-uploads/2c7a07a3-7485-4473-9ef7-fadb019f021d.png" 
+              alt="Hunters Logo" 
+              className="w-24 h-24 object-contain"
+            />
           </div>
           <h3 className="text-2xl font-bold text-foreground">
             Conecte-se através do esporte
