@@ -9,11 +9,11 @@ Deno.serve(async (req) => {
   try {
     console.log('Starting event cleanup...')
     
-    // Calculate the cutoff time (1 hour after event start time)
+    // Calculate the cutoff time (2 hours after event start time)
     const cutoffTime = new Date()
-    cutoffTime.setHours(cutoffTime.getHours() - 1)
+    cutoffTime.setHours(cutoffTime.getHours() - 2)
     
-    // Delete events that are 1 hour past their start time
+    // Delete events that are 2 hours past their start time
     const { data: deletedEvents, error } = await supabase
       .from('events')
       .delete()
