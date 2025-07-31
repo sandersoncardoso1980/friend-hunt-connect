@@ -1,67 +1,93 @@
-import { useQuery } from "@tanstack/react-query";
+import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+
+interface Ad {
+  id: string;
+  title: string;
+  description: string | null;
+  image_url: string;
+  link_url: string | null;
+}
 
 export const AdsCarousel = () => {
-  const { data: ads, isLoading } = useQuery({
-    queryKey: ["ads-carousel"],
-    queryFn: async () => {
+  const [ads, setAds] = useState<Ad[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchAds();
+  }, []);
+
+  const fetchAds = async () => {
+    try {
       const { data, error } = await supabase
         .from("ads_carousel")
         .select("*")
         .eq("is_active", true)
-        .order("display_order");
-      
-      if (error) throw error;
-      return data;
-    },
-  });
+        .order("display_order", { ascending: true });
 
-  if (isLoading) {
+      if (error) throw error;
+      setAds(data || []);
+    } catch (error) {
+      console.error("Error fetching ads:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
     return (
-      <div className="mb-6">
-        <Skeleton className="h-32 w-full rounded-lg" />
-      </div>
+      <div className="w-full h-32 sm:h-36 bg-muted animate-pulse rounded-lg"></div>
     );
   }
 
-  if (!ads || ads.length === 0) {
+  if (ads.length === 0) {
     return null;
   }
 
+  const handleAdClick = (linkUrl: string | null) => {
+    if (linkUrl) {
+      window.open(linkUrl, '_blank');
+    }
+  };
+
   return (
-    <div className="mb-6">
-      <h2 className="text-lg font-semibold mb-3">Parceiros</h2>
-      <div className="flex gap-4 overflow-x-auto pb-2">
-        {ads.map((ad) => (
-          <Card 
-            key={ad.id} 
-            className="min-w-[300px] cursor-pointer hover:shadow-md transition-shadow"
-            onClick={() => ad.link_url && window.open(ad.link_url, '_blank')}
-          >
-            <CardContent className="p-4">
-              <div className="flex items-center space-x-4">
-                {ad.image_url && (
-                  <img 
-                    src={ad.image_url} 
-                    alt={ad.title}
-                    className="w-16 h-16 object-cover rounded-lg"
-                  />
-                )}
-                <div>
-                  <h3 className="font-medium">{ad.title}</h3>
-                  {ad.description && (
-                    <p className="text-sm text-muted-foreground mt-1">
-                      {ad.description}
-                    </p>
-                  )}
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+    <div className="w-full">
+      <Carousel className="w-full">
+        <CarouselContent>
+          {ads.map((ad) => (
+            <CarouselItem key={ad.id}>
+              <Card 
+                className="cursor-pointer hover:shadow-lg transition-shadow"
+                onClick={() => handleAdClick(ad.link_url)}
+              >
+                <CardContent className="p-0">
+                  <div className="relative h-32 sm:h-36 overflow-hidden rounded-lg">
+                    <img
+                      src={ad.image_url}
+                      alt={ad.title}
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4">
+                      <h3 className="text-white font-semibold text-lg">{ad.title}</h3>
+                      {ad.description && (
+                        <p className="text-white/90 text-sm">{ad.description}</p>
+                      )}
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+        {ads.length > 1 && (
+          <>
+            <CarouselPrevious />
+            <CarouselNext />
+          </>
+        )}
+      </Carousel>
     </div>
   );
 };
