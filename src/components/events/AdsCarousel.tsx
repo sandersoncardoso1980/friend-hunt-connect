@@ -88,7 +88,7 @@ export const AdsCarousel = () => {
         // Adicione o plugin diretamente aqui
         plugins={[
           Autoplay({
-            delay: 2000,
+            delay: 5000,
             stopOnInteraction: true,
           }),
         ]}
