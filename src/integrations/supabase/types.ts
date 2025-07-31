@@ -296,6 +296,7 @@ export type Database = {
           id: string
           is_premium: boolean | null
           posts_count: number | null
+          total_points: number | null
           updated_at: string
           user_id: string
         }
@@ -313,6 +314,7 @@ export type Database = {
           id?: string
           is_premium?: boolean | null
           posts_count?: number | null
+          total_points?: number | null
           updated_at?: string
           user_id: string
         }
@@ -330,6 +332,7 @@ export type Database = {
           id?: string
           is_premium?: boolean | null
           posts_count?: number | null
+          total_points?: number | null
           updated_at?: string
           user_id?: string
         }
@@ -356,6 +359,33 @@ export type Database = {
           following_id?: string
           id?: string
           status?: string
+        }
+        Relationships: []
+      }
+      user_points: {
+        Row: {
+          created_at: string
+          event_id: string | null
+          id: string
+          points: number
+          reason: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          event_id?: string | null
+          id?: string
+          points: number
+          reason: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          event_id?: string | null
+          id?: string
+          points?: number
+          reason?: string
+          user_id?: string
         }
         Relationships: []
       }

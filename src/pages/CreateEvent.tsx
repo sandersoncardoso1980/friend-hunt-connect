@@ -26,8 +26,10 @@ const CreateEvent = () => {
   );
 
   return (
-    <div className="min-h-screen bg-background pb-20">
-      <header className="bg-background border-b p-4">
+    <div className="min-h-screen bg-background pb-20 lg:pb-0 lg:flex">
+      <BottomNavigation />
+      <div className="flex-1">
+        <header className="bg-background border-b p-4">
         <div className="flex items-center gap-3">
           <Button
             variant="ghost"
@@ -116,12 +118,11 @@ const CreateEvent = () => {
         )}
       </main>
 
-      <CreateEventDialog 
-        open={showDialog} 
-        onOpenChange={setShowDialog}
-      />
-      
-      <BottomNavigation />
+        <CreateEventDialog 
+          open={showDialog} 
+          onOpenChange={setShowDialog}
+        />
+      </div>
     </div>
   );
 };

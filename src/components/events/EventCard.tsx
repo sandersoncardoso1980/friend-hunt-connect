@@ -24,6 +24,11 @@ interface EventCardProps {
 
 export const EventCard = ({ event, onClick }: EventCardProps) => {
   const eventDate = new Date(`${event.event_date}T${event.event_time}`);
+  const now = new Date();
+  const oneHourBeforeEvent = new Date(eventDate.getTime() - 60 * 60 * 1000);
+  
+  const isFull = event.current_participants >= event.max_participants;
+  const isEventSoon = now >= oneHourBeforeEvent;
   
   return (
     <Card 
@@ -33,9 +38,21 @@ export const EventCard = ({ event, onClick }: EventCardProps) => {
       <CardContent className="p-4 space-y-3">
         <div className="flex items-start justify-between">
           <h3 className="font-semibold text-lg line-clamp-2">{event.name}</h3>
-          <Badge variant="secondary" className="ml-2 shrink-0">
-            {event.sport_type}
-          </Badge>
+          <div className="flex flex-col gap-1 ml-2 shrink-0">
+            <Badge variant="secondary">
+              {event.sport_type}
+            </Badge>
+            {isFull && (
+              <Badge variant="destructive" className="text-xs">
+                Lotado
+              </Badge>
+            )}
+            {isEventSoon && !isFull && (
+              <Badge variant="destructive" className="text-xs">
+                Encerrado
+              </Badge>
+            )}
+          </div>
         </div>
         
         <p className="text-muted-foreground text-sm line-clamp-2">

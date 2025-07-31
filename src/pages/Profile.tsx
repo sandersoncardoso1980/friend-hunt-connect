@@ -12,6 +12,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useQuery } from "@tanstack/react-query";
 import { useSocialActions } from "@/hooks/useSocialActions";
+import { useGeolocation } from "@/hooks/useGeolocation";
+import { useEffect } from "react";
 
 const Profile = () => {
   const { user, loading: authLoading } = useAuth();
@@ -20,8 +22,9 @@ const Profile = () => {
   const { userId } = useParams();
   const profileUserId = userId || user?.id;
   const isOwnProfile = !userId || userId === user?.id;
+  const { city: currentCity, loading: locationLoading } = useGeolocation();
 
-  const { data: profile, isLoading: profileLoading } = useQuery({
+  const { data: profile, isLoading: profileLoading, refetch: refetchProfile } = useQuery({
     queryKey: ["profile", profileUserId],
     queryFn: async () => {
       if (!profileUserId) return null;
@@ -37,6 +40,30 @@ const Profile = () => {
     },
     enabled: !!profileUserId,
   });
+
+  // Update user's current city when geolocation is available and it's own profile
+  useEffect(() => {
+    const updateUserCity = async () => {
+      if (!currentCity || !isOwnProfile || !user?.id || locationLoading) return;
+      
+      // Only update if current city is different from profile city
+      if (profile?.city !== currentCity) {
+        try {
+          await supabase
+            .from("profiles")
+            .update({ city: currentCity })
+            .eq("user_id", user.id);
+          
+          // Refetch profile to get updated data
+          refetchProfile();
+        } catch (error) {
+          console.error("Error updating user city:", error);
+        }
+      }
+    };
+
+    updateUserCity();
+  }, [currentCity, isOwnProfile, user?.id, locationLoading, profile?.city, refetchProfile]);
 
   const { data: userEvents, isLoading: eventsLoading } = useQuery({
     queryKey: ["userEvents", profileUserId],
@@ -104,8 +131,10 @@ const Profile = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background pb-20">
-      <header className="bg-background border-b p-4">
+    <div className="min-h-screen bg-background pb-20 lg:pb-0 lg:flex">
+      <BottomNavigation />
+      <div className="flex-1">
+        <header className="bg-background border-b p-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Button
@@ -135,16 +164,16 @@ const Profile = () => {
           <CardContent className="pt-6">
             <div className="flex items-start space-x-4">
               <Avatar className="w-20 h-20">
-                <AvatarImage src={profile?.avatar_url} />
+                <AvatarImage src={profile?.avatar_url} alt={profile?.full_name || "Foto do usuário"} />
                 <AvatarFallback className="bg-gradient-to-br from-primary to-secondary text-white text-2xl">
-                  {profile?.full_name?.charAt(0)?.toUpperCase() || "U"}
+                  {profile?.full_name?.charAt(0)?.toUpperCase() || user?.email?.charAt(0)?.toUpperCase() || "U"}
                 </AvatarFallback>
               </Avatar>
               
               <div className="flex-1">
                 <div className="flex items-center justify-between mb-2">
                   <h2 className="text-xl font-semibold">
-                    {profile?.full_name || "Usuário"}
+                    {profile?.full_name || user?.email?.split('@')[0] || "Usuário"}
                   </h2>
                   {isOwnProfile ? (
                     <Button variant="outline" size="sm">
@@ -168,10 +197,13 @@ const Profile = () => {
                   <p className="text-sm text-muted-foreground mb-2">{profile.bio}</p>
                 )}
                 
-                {profile?.city && (
+                {(profile?.city || (isOwnProfile && currentCity)) && (
                   <div className="flex items-center gap-1 mb-3 text-sm text-muted-foreground">
                     <MapPin className="h-3 w-3" />
-                    {profile.city}
+                    {isOwnProfile ? (currentCity || profile?.city || "Localizando...") : profile?.city}
+                    {isOwnProfile && locationLoading && !currentCity && (
+                      <span className="text-xs"> (obtendo localização...)</span>
+                    )}
                   </div>
                 )}
                 
@@ -188,10 +220,14 @@ const Profile = () => {
                     <div className="font-semibold">{profile?.following_count || 0}</div>
                     <div className="text-muted-foreground">Seguindo</div>
                   </div>
-                  <div className="text-center">
-                    <div className="font-semibold">{userPhotos?.length || 0}</div>
-                    <div className="text-muted-foreground">Fotos</div>
-                  </div>
+                   <div className="text-center">
+                     <div className="font-semibold">{userPhotos?.length || 0}</div>
+                     <div className="text-muted-foreground">Fotos</div>
+                   </div>
+                   <div className="text-center">
+                     <div className="font-semibold text-primary">{profile?.total_points || 0}</div>
+                     <div className="text-muted-foreground">Pontos</div>
+                   </div>
                 </div>
               </div>
             </div>
@@ -310,12 +346,14 @@ const Profile = () => {
                   </div>
                 </div>
                 
-                {profile?.city && (
+                {(profile?.city || (isOwnProfile && currentCity)) && (
                   <div className="flex items-center space-x-3">
                     <MapPin className="h-5 w-5 text-primary" />
                     <div>
-                      <p className="font-medium">Localização</p>
-                      <p className="text-sm text-muted-foreground">{profile.city}</p>
+                      <p className="font-medium">Localização Atual</p>
+                      <p className="text-sm text-muted-foreground">
+                        {isOwnProfile ? (currentCity || profile?.city || "Obtendo localização...") : profile?.city}
+                      </p>
                     </div>
                   </div>
                 )}
@@ -346,9 +384,8 @@ const Profile = () => {
             </Card>
           </TabsContent>
         </Tabs>
-      </main>
-
-      <BottomNavigation />
+        </main>
+      </div>
     </div>
   );
 };
