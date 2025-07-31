@@ -8,14 +8,14 @@ index.html:
    7:     <meta name="description" content="Sanderson Generated Project" />
    8:     <meta name="author" content="Hunters" />
    9  
-  10      <meta property="og:title" content="friend-hunt-connect" />
+  10      <meta property="og:title" content="hunters_events" />
   11:     <meta property="og:description" content="Lovable Generated Project" />
   12      <meta property="og:type" content="website" />
-  13:     <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+  13:     <meta property="og:image" content="https://ideogram.ai/assets/progressive-image/balanced/response/71GfavOsS_mba2APN39HUQ" />
   14  
   15      <meta name="twitter:card" content="summary_large_image" />
   16:     <meta name="twitter:site" content="@lovable_dev" />
-  17:     <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+  17:     <meta name="twitter:image" content="" />
   18    </head>
 
 package-lock.json:
