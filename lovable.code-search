@@ -1,0 +1,87 @@
+# Query: lovable
+# ContextLines: 1
+
+27 results - 7 files
+
+index.html:
+   6      <title>hunters_events</title>
+   7:     <meta name="description" content="Sanderson Generated Project" />
+   8:     <meta name="author" content="Hunters" />
+   9  
+  10      <meta property="og:title" content="friend-hunt-connect" />
+  11:     <meta property="og:description" content="Lovable Generated Project" />
+  12      <meta property="og:type" content="website" />
+  13:     <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+  14  
+  15      <meta name="twitter:card" content="summary_large_image" />
+  16:     <meta name="twitter:site" content="@lovable_dev" />
+  17:     <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+  18    </head>
+
+package-lock.json:
+     80          "globals": "^15.9.0",
+     81:         "lovable-tagger": "^1.1.7",
+     82          "postcss": "^8.4.47",
+
+  11889      },
+  11890:     "node_modules/lovable-tagger": {
+  11891        "version": "1.1.8",
+  11892:       "resolved": "https://registry.npmjs.org/lovable-tagger/-/lovable-tagger-1.1.8.tgz",
+  11893        "integrity": "sha512-0a8lEpsgk+Z6crd+HE+GTmVzB0f++lMyTgW3QUF+hYZBjsA384RqUfCZAYccHlMLxYPI+dk7zjVuIvJcq8PiBg==",
+
+package.json:
+  83      "globals": "^15.9.0",
+  84:     "lovable-tagger": "^1.1.7",
+  85      "postcss": "^8.4.47",
+
+README.md:
+   1: # Welcome to your Lovable project
+   2  
+
+   4  
+   5: **URL**: https://lovable.dev/projects/6287cb86-d3c1-42c3-bac3-17ed76bb507e
+   6  
+
+  10  
+  11: **Use Lovable**
+  12  
+  13: Simply visit the [Lovable Project](https://lovable.dev/projects/6287cb86-d3c1-42c3-bac3-17ed76bb507e) and start prompting.
+  14  
+  15: Changes made via Lovable will be committed automatically to this repo.
+  16  
+
+  18  
+  19: If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+  20  
+
+  64  
+  65: Simply open [Lovable](https://lovable.dev/projects/6287cb86-d3c1-42c3-bac3-17ed76bb507e) and click on Share -> Publish.
+  66  
+  67: ## Can I connect a custom domain to my Lovable project?
+  68  
+
+  72  
+  73: Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+
+vite.config.ts:
+  3  import path from "path";
+  4: import { componentTagger } from "lovable-tagger";
+  5  
+
+src\components\auth\AuthLayout.tsx:
+  17                <img 
+  18:                 src="" 
+  19                  alt="" 
+
+  38              <img 
+  39:               src="" 
+  40                alt="" 
+
+src\pages\Index.tsx:
+  50              <img 
+  51:               src="" 
+  52                alt="Hunters Logo" 
+
+  84              <img 
+  85:               src="/lovable-uploads/2c7a07a3-7485-4473-9ef7-fadb019f021d.png" 
+  86                alt="Hunters Logo" 
