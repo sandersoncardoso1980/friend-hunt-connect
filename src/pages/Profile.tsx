@@ -6,12 +6,14 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ArrowLeft, MapPin, Trophy, Calendar, Settings, LogOut, Edit3, Camera, Heart, Users, Grid } from "lucide-react";
+import { ArrowLeft, MapPin, Trophy, Calendar, Settings, LogOut, Edit3, Camera, Heart, Users, Grid, Trash2, MoreVertical } from "lucide-react";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { useNavigate, useParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -39,6 +41,23 @@ const Profile = () => {
     avatar_url: ""
   });
   const [isUpdating, setIsUpdating] = useState(false);
+  
+  // Estados para edição de evento
+  const [isEditEventDialogOpen, setIsEditEventDialogOpen] = useState(false);
+  const [editingEvent, setEditingEvent] = useState<any>(null);
+  const [eventForm, setEventForm] = useState({
+    name: "",
+    description: "",
+    location: "",
+    sport_type: "",
+    max_participants: "",
+    event_date: "",
+    event_time: "",
+    difficulty_level: "",
+    age_group: "",
+    category: ""
+  });
+  const [isDeletingEvent, setIsDeletingEvent] = useState(false);
 
   const { data: profile, isLoading: profileLoading, refetch: refetchProfile } = useQuery({
     queryKey: ["profile", profileUserId],
@@ -132,7 +151,103 @@ const Profile = () => {
     }
   };
 
-  const { data: userEvents, isLoading: eventsLoading } = useQuery({
+  const handleEditEvent = (event: any) => {
+    setEditingEvent(event);
+    setEventForm({
+      name: event.name,
+      description: event.description,
+      location: event.location,
+      sport_type: event.sport_type,
+      max_participants: event.max_participants.toString(),
+      event_date: event.event_date,
+      event_time: event.event_time,
+      difficulty_level: event.difficulty_level,
+      age_group: event.age_group,
+      category: event.category
+    });
+    setIsEditEventDialogOpen(true);
+  };
+
+  const handleUpdateEvent = async () => {
+    if (!editingEvent || !user?.id) return;
+    
+    setIsUpdating(true);
+    try {
+      const updateData = {
+        name: eventForm.name,
+        description: eventForm.description,
+        location: eventForm.location,
+        sport_type: eventForm.sport_type,
+        max_participants: parseInt(eventForm.max_participants),
+        event_date: eventForm.event_date,
+        event_time: eventForm.event_time,
+        difficulty_level: eventForm.difficulty_level,
+        age_group: eventForm.age_group,
+        category: eventForm.category
+      };
+
+      const { error } = await supabase
+        .from("events")
+        .update(updateData)
+        .eq("id", editingEvent.id);
+
+      if (error) throw error;
+
+      toast({
+        title: "Evento atualizado",
+        description: "O evento foi atualizado com sucesso.",
+      });
+
+      setIsEditEventDialogOpen(false);
+      refetchEvents();
+    } catch (error: any) {
+      toast({
+        title: "Erro ao atualizar evento",
+        description: error.message,
+        variant: "destructive",
+      });
+    } finally {
+      setIsUpdating(false);
+    }
+  };
+
+  const handleDeleteEvent = async (eventId: string) => {
+    if (!user?.id) return;
+    
+    setIsDeletingEvent(true);
+    try {
+      // First delete participants
+      await supabase
+        .from("event_participants")
+        .delete()
+        .eq("event_id", eventId);
+
+      // Then delete the event
+      const { error } = await supabase
+        .from("events")
+        .delete()
+        .eq("id", eventId);
+
+      if (error) throw error;
+
+      toast({
+        title: "Evento cancelado",
+        description: "O evento foi cancelado e removido com sucesso.",
+      });
+
+      refetchEvents();
+    } catch (error: any) {
+      toast({
+        title: "Erro ao cancelar evento",
+        description: error.message,
+        variant: "destructive",
+      });
+    } finally {
+      setIsDeletingEvent(false);
+    }
+  };
+
+  const { data: userEvents, isLoading: eventsLoading, refetch: refetchEvents } = useQuery({
     queryKey: ["userEvents", profileUserId],
     queryFn: async () => {
       if (!profileUserId) return [];
@@ -147,6 +262,24 @@ const Profile = () => {
       return data;
     },
     enabled: !!profileUserId,
+  });
+
+  // Query para histórico de pontos
+  const { data: pointsHistory, isLoading: pointsLoading } = useQuery({
+    queryKey: ["pointsHistory", profileUserId],
+    queryFn: async () => {
+      if (!profileUserId) return [];
+      
+      const { data, error } = await supabase
+        .from("user_points")
+        .select("*")
+        .eq("user_id", profileUserId)
+        .order("created_at", { ascending: false });
+      
+      if (error) throw error;
+      return data;
+    },
+    enabled: !!profileUserId && isOwnProfile,
   });
 
   const { 
@@ -348,6 +481,107 @@ const Profile = () => {
                     </Button>
                   )}
                 </div>
+
+                {/* Dialog para editar evento */}
+                <Dialog open={isEditEventDialogOpen} onOpenChange={setIsEditEventDialogOpen}>
+                  <DialogContent className="sm:max-w-[425px]">
+                    <DialogHeader>
+                      <DialogTitle>Editar Evento</DialogTitle>
+                    </DialogHeader>
+                    <div className="grid gap-4 py-4 max-h-[400px] overflow-y-auto">
+                      <div className="grid gap-2">
+                        <Label htmlFor="event_name">Nome do Evento</Label>
+                        <Input
+                          id="event_name"
+                          value={eventForm.name}
+                          onChange={(e) => setEventForm(prev => ({ ...prev, name: e.target.value }))}
+                          placeholder="Nome do evento"
+                        />
+                      </div>
+                      <div className="grid gap-2">
+                        <Label htmlFor="event_description">Descrição</Label>
+                        <Textarea
+                          id="event_description"
+                          value={eventForm.description}
+                          onChange={(e) => setEventForm(prev => ({ ...prev, description: e.target.value }))}
+                          placeholder="Descrição do evento"
+                          rows={3}
+                        />
+                      </div>
+                      <div className="grid gap-2">
+                        <Label htmlFor="event_location">Local</Label>
+                        <Input
+                          id="event_location"
+                          value={eventForm.location}
+                          onChange={(e) => setEventForm(prev => ({ ...prev, location: e.target.value }))}
+                          placeholder="Local do evento"
+                        />
+                      </div>
+                      <div className="grid gap-2">
+                        <Label htmlFor="event_sport">Esporte</Label>
+                        <Select
+                          value={eventForm.sport_type}
+                          onValueChange={(value) => setEventForm(prev => ({ ...prev, sport_type: value }))}
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Selecione o esporte" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="futebol">Futebol</SelectItem>
+                            <SelectItem value="basquete">Basquete</SelectItem>
+                            <SelectItem value="volei">Vôlei</SelectItem>
+                            <SelectItem value="tenis">Tênis</SelectItem>
+                            <SelectItem value="corrida">Corrida</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div className="grid gap-2">
+                        <Label htmlFor="max_participants">Máximo de Participantes</Label>
+                        <Input
+                          id="max_participants"
+                          type="number"
+                          value={eventForm.max_participants}
+                          onChange={(e) => setEventForm(prev => ({ ...prev, max_participants: e.target.value }))}
+                          placeholder="Número máximo"
+                          min="2"
+                        />
+                      </div>
+                      <div className="grid gap-2">
+                        <Label htmlFor="event_date">Data</Label>
+                        <Input
+                          id="event_date"
+                          type="date"
+                          value={eventForm.event_date}
+                          onChange={(e) => setEventForm(prev => ({ ...prev, event_date: e.target.value }))}
+                        />
+                      </div>
+                      <div className="grid gap-2">
+                        <Label htmlFor="event_time">Horário</Label>
+                        <Input
+                          id="event_time"
+                          type="time"
+                          value={eventForm.event_time}
+                          onChange={(e) => setEventForm(prev => ({ ...prev, event_time: e.target.value }))}
+                        />
+                      </div>
+                    </div>
+                    <DialogFooter>
+                      <Button
+                        variant="outline"
+                        onClick={() => setIsEditEventDialogOpen(false)}
+                        disabled={isUpdating}
+                      >
+                        Cancelar
+                      </Button>
+                      <Button
+                        onClick={handleUpdateEvent}
+                        disabled={isUpdating}
+                      >
+                        {isUpdating ? "Salvando..." : "Salvar alterações"}
+                      </Button>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
                 
                 {profile?.bio && (
                   <p className="text-sm text-muted-foreground mb-2 text-center sm:text-left">{profile.bio}</p>
@@ -457,30 +691,78 @@ const Profile = () => {
                   <Skeleton key={i} className="h-16" />
                 ))}
               </div>
-            ) : userEvents && userEvents.length > 0 ? (
-              <div className="space-y-3">
-                {userEvents.map((event) => (
-                  <Card key={event.id} className="cursor-pointer hover:shadow-md transition-shadow"
-                        onClick={() => navigate(`/events/${event.id}`)}>
-                    <CardContent className="p-4">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <p className="font-medium">{event.name}</p>
-                          <p className="text-sm text-muted-foreground">
-                            {new Date(event.event_date).toLocaleDateString("pt-BR")} • {event.location}
-                          </p>
-                          <Badge variant="secondary" className="mt-1">
-                            {event.sport_type}
-                          </Badge>
-                        </div>
-                        <div className="text-sm text-muted-foreground">
-                          {event.current_participants}/{event.max_participants}
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
+             ) : userEvents && userEvents.length > 0 ? (
+               <div className="space-y-3">
+                 {userEvents.map((event) => (
+                   <Card key={event.id} className="hover:shadow-md transition-shadow">
+                     <CardContent className="p-4">
+                       <div className="flex items-center justify-between">
+                         <div 
+                           className="flex-1 cursor-pointer"
+                           onClick={() => navigate(`/events/${event.id}`)}
+                         >
+                           <p className="font-medium">{event.name}</p>
+                           <p className="text-sm text-muted-foreground">
+                             {new Date(event.event_date).toLocaleDateString("pt-BR")} • {event.location}
+                           </p>
+                           <Badge variant="secondary" className="mt-1">
+                             {event.sport_type}
+                           </Badge>
+                         </div>
+                         <div className="flex items-center gap-2">
+                           <div className="text-sm text-muted-foreground">
+                             {event.current_participants}/{event.max_participants}
+                           </div>
+                           {isOwnProfile && (
+                             <DropdownMenu>
+                               <DropdownMenuTrigger asChild>
+                                 <Button variant="ghost" size="sm" className="p-1">
+                                   <MoreVertical className="h-4 w-4" />
+                                 </Button>
+                               </DropdownMenuTrigger>
+                               <DropdownMenuContent align="end">
+                                 <DropdownMenuItem onClick={() => handleEditEvent(event)}>
+                                   <Edit3 className="h-4 w-4 mr-2" />
+                                   Editar evento
+                                 </DropdownMenuItem>
+                                 <AlertDialog>
+                                   <AlertDialogTrigger asChild>
+                                     <DropdownMenuItem 
+                                       onSelect={(e) => e.preventDefault()}
+                                       className="text-destructive focus:text-destructive"
+                                     >
+                                       <Trash2 className="h-4 w-4 mr-2" />
+                                       Cancelar evento
+                                     </DropdownMenuItem>
+                                   </AlertDialogTrigger>
+                                   <AlertDialogContent>
+                                     <AlertDialogHeader>
+                                       <AlertDialogTitle>Cancelar evento</AlertDialogTitle>
+                                       <AlertDialogDescription>
+                                         Tem certeza que deseja cancelar este evento? Esta ação não pode ser desfeita.
+                                       </AlertDialogDescription>
+                                     </AlertDialogHeader>
+                                     <AlertDialogFooter>
+                                       <AlertDialogCancel>Não</AlertDialogCancel>
+                                       <AlertDialogAction 
+                                         onClick={() => handleDeleteEvent(event.id)}
+                                         disabled={isDeletingEvent}
+                                         className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                                       >
+                                         {isDeletingEvent ? "Cancelando..." : "Sim, cancelar"}
+                                       </AlertDialogAction>
+                                     </AlertDialogFooter>
+                                   </AlertDialogContent>
+                                 </AlertDialog>
+                               </DropdownMenuContent>
+                             </DropdownMenu>
+                           )}
+                         </div>
+                       </div>
+                     </CardContent>
+                   </Card>
+                 ))}
+               </div>
             ) : (
               <div className="text-center py-12">
                 <Calendar className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
@@ -520,6 +802,44 @@ const Profile = () => {
                     <div>
                       <p className="font-medium">Idade</p>
                       <p className="text-sm text-muted-foreground">{profile.age} anos</p>
+                    </div>
+                  </div>
+                )}
+
+                {isOwnProfile && pointsHistory && pointsHistory.length > 0 && (
+                  <div className="pt-4 border-t">
+                    <h4 className="font-medium mb-3 flex items-center">
+                      <Trophy className="h-4 w-4 mr-2 text-primary" />
+                      Histórico de Pontos
+                    </h4>
+                    <div className="space-y-2 max-h-60 overflow-y-auto">
+                      {pointsLoading ? (
+                        [...Array(3)].map((_, i) => (
+                          <div key={i} className="flex justify-between items-center p-2 rounded bg-muted/50">
+                            <div className="space-y-1">
+                              <div className="h-3 bg-muted rounded w-32"></div>
+                              <div className="h-2 bg-muted rounded w-24"></div>
+                            </div>
+                            <div className="h-4 bg-muted rounded w-12"></div>
+                          </div>
+                        ))
+                      ) : (
+                        pointsHistory.map((point) => (
+                          <div key={point.id} className="flex justify-between items-center p-2 rounded bg-muted/50">
+                            <div>
+                              <p className="text-sm font-medium">{point.reason}</p>
+                              <p className="text-xs text-muted-foreground">
+                                {new Date(point.created_at).toLocaleDateString("pt-BR")}
+                              </p>
+                            </div>
+                            <span className={`text-sm font-medium ${
+                              point.points > 0 ? 'text-green-600' : 'text-red-600'
+                            }`}>
+                              {point.points > 0 ? '+' : ''}{point.points} pts
+                            </span>
+                          </div>
+                        ))
+                      )}
                     </div>
                   </div>
                 )}
