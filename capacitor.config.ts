@@ -1,8 +1,8 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.friendhunt.app',
-  appName: 'friend-hunt-connect',
+  appId: 'com.huntersmod.app',
+  appName: 'hunters_mod',
   webDir: 'dist'
 };
 
