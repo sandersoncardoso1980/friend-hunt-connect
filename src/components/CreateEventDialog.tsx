@@ -22,7 +22,7 @@ export const CreateEventDialog = ({ open, onOpenChange }: CreateEventDialogProps
     event_date: "",
     event_time: "",
     max_participants: "",
-    sport_type: "futebol"
+    sport_type: "Esportes e Atividades Físicas"
   });
   const { toast } = useToast();
 
@@ -61,7 +61,7 @@ export const CreateEventDialog = ({ open, onOpenChange }: CreateEventDialogProps
         event_date: "",
         event_time: "",
         max_participants: "",
-        sport_type: "futebol"
+        sport_type: "Esportes e Atividades Físicas"
       });
       onOpenChange(false);
     } catch (error: any) {
@@ -151,20 +151,20 @@ export const CreateEventDialog = ({ open, onOpenChange }: CreateEventDialogProps
               />
             </div>
             <div>
-              <Label htmlFor="sport_type">Esporte</Label>
+              <Label htmlFor="sport_type">Categoria</Label>
               <Select value={formData.sport_type} onValueChange={(value) => setFormData({ ...formData, sport_type: value })}>
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="futebol">Futebol</SelectItem>
-                  <SelectItem value="basquete">Basquete</SelectItem>
-                  <SelectItem value="volei">Vôlei</SelectItem>
-                  <SelectItem value="tenis">Tênis</SelectItem>
-                  <SelectItem value="corrida">Corrida</SelectItem>
-                  <SelectItem value="ciclismo">Ciclismo</SelectItem>
-                  <SelectItem value="natacao">Natação</SelectItem>
-                  <SelectItem value="outros">Outros</SelectItem>
+                  <SelectItem value="Esportes e Atividades Físicas">Esportes e Atividades Físicas</SelectItem>
+                  <SelectItem value="Arte e Cultura">Arte e Cultura</SelectItem>
+                  <SelectItem value="Educação e Desenvolvimento Pessoal">Educação e Desenvolvimento Pessoal</SelectItem>
+                  <SelectItem value="Profissional e Network">Profissional e Network</SelectItem>
+                  <SelectItem value="Entretenimentos e Jogos">Entretenimentos e Jogos</SelectItem>
+                  <SelectItem value="Bem-estar e Estilo de Vida">Bem-estar e Estilo de Vida</SelectItem>
+                  <SelectItem value="Família e Comunidade">Família e Comunidade</SelectItem>
+                  <SelectItem value="Relacionamento e Vida Social">Relacionamento e Vida Social</SelectItem>
                 </SelectContent>
               </Select>
             </div>

@@ -90,12 +90,15 @@ const Explore = () => {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">Todos os esportes</SelectItem>
-                <SelectItem value="futebol">Futebol</SelectItem>
-                <SelectItem value="basquete">Basquete</SelectItem>
-                <SelectItem value="volei">Vôlei</SelectItem>
-                <SelectItem value="tenis">Tênis</SelectItem>
-                <SelectItem value="corrida">Corrida</SelectItem>
+                <SelectItem value="all">Todas as categorias</SelectItem>
+                <SelectItem value="Esportes e Atividades Físicas">Esportes e Atividades Físicas</SelectItem>
+                <SelectItem value="Arte e Cultura">Arte e Cultura</SelectItem>
+                <SelectItem value="Educação e Desenvolvimento Pessoal">Educação e Desenvolvimento Pessoal</SelectItem>
+                <SelectItem value="Profissional e Network">Profissional e Network</SelectItem>
+                <SelectItem value="Entretenimentos e Jogos">Entretenimentos e Jogos</SelectItem>
+                <SelectItem value="Bem-estar e Estilo de Vida">Bem-estar e Estilo de Vida</SelectItem>
+                <SelectItem value="Família e Comunidade">Família e Comunidade</SelectItem>
+                <SelectItem value="Relacionamento e Vida Social">Relacionamento e Vida Social</SelectItem>
               </SelectContent>
             </Select>
           </div>

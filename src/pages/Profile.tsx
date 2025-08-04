@@ -518,20 +518,23 @@ const Profile = () => {
                         />
                       </div>
                       <div className="grid gap-2">
-                        <Label htmlFor="event_sport">Esporte</Label>
+                        <Label htmlFor="event_sport">Categoria</Label>
                         <Select
                           value={eventForm.sport_type}
                           onValueChange={(value) => setEventForm(prev => ({ ...prev, sport_type: value }))}
                         >
                           <SelectTrigger>
-                            <SelectValue placeholder="Selecione o esporte" />
+                            <SelectValue placeholder="Selecione a categoria" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="futebol">Futebol</SelectItem>
-                            <SelectItem value="basquete">Basquete</SelectItem>
-                            <SelectItem value="volei">Vôlei</SelectItem>
-                            <SelectItem value="tenis">Tênis</SelectItem>
-                            <SelectItem value="corrida">Corrida</SelectItem>
+                            <SelectItem value="Esportes e Atividades Físicas">Esportes e Atividades Físicas</SelectItem>
+                            <SelectItem value="Arte e Cultura">Arte e Cultura</SelectItem>
+                            <SelectItem value="Educação e Desenvolvimento Pessoal">Educação e Desenvolvimento Pessoal</SelectItem>
+                            <SelectItem value="Profissional e Network">Profissional e Network</SelectItem>
+                            <SelectItem value="Entretenimentos e Jogos">Entretenimentos e Jogos</SelectItem>
+                            <SelectItem value="Bem-estar e Estilo de Vida">Bem-estar e Estilo de Vida</SelectItem>
+                            <SelectItem value="Família e Comunidade">Família e Comunidade</SelectItem>
+                            <SelectItem value="Relacionamento e Vida Social">Relacionamento e Vida Social</SelectItem>
                           </SelectContent>
                         </Select>
                       </div>
