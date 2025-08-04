@@ -41,7 +41,7 @@ export const AdsCarousel = () => {
 
   if (loading) {
     return (
-      <div className="w-full h-32 sm:h-36 bg-muted animate-pulse rounded-lg"></div>
+      <div className="w-full h-38 sm:h-44 bg-muted animate-pulse rounded-lg"></div>
     );
   }
 
@@ -55,7 +55,7 @@ export const AdsCarousel = () => {
             onClick={() => ads[0].link_url && window.open(ads[0].link_url, '_blank')}
           >
             <CardContent className="p-0">
-              <div className="relative h-32 sm:h-36 overflow-hidden rounded-lg">
+              <div className="relative h-38 sm:h-44 overflow-hidden rounded-lg">
                 <img
                   src={ads[0].image_url}
                   alt={ads[0].title}
@@ -104,7 +104,7 @@ export const AdsCarousel = () => {
                 onClick={() => handleAdClick(ad.link_url)}
               >
                 <CardContent className="p-0">
-                  <div className="relative h-32 sm:h-36 overflow-hidden rounded-lg">
+                  <div className="relative h-38 sm:h-44 overflow-hidden rounded-lg">
                     <img
                       src={ad.image_url}
                       alt={ad.title}

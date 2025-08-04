@@ -38,7 +38,7 @@ export const AdsCarousel = () => {
 
   if (loading) {
     return (
-      <div className="w-full h-48 bg-muted animate-pulse rounded-lg"></div>
+      <div className="w-full h-58 bg-muted animate-pulse rounded-lg"></div>
     );
   }
 
@@ -63,7 +63,7 @@ export const AdsCarousel = () => {
                 onClick={() => handleAdClick(ad.link_url)}
               >
                 <CardContent className="p-0">
-                  <div className="relative h-48 overflow-hidden rounded-lg">
+                  <div className="relative h-58 overflow-hidden rounded-lg">
                     <img
                       src={ad.image_url}
                       alt={ad.title}
