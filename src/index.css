@@ -8,85 +8,107 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Paleta moderna e emocionalmente neutra */
-    --background: 243 246 249; /* #F3F6F9 - Cinza azulado claro */
-    --foreground: 46 58 89; /* #2E3A59 - Cinza escuro */
-    --card: 255 255 255; /* #FFFFFF - Branco */
-    --card-foreground: 46 58 89; /* #2E3A59 - Cinza escuro */
-    --popover: 255 255 255; /* #FFFFFF - Branco */
-    --popover-foreground: 46 58 89; /* #2E3A59 - Cinza escuro */
-    --primary: 121 157 122; /* #799D7A - Verde oliva suave */
-    --primary-foreground: 255 255 255; /* Branco para contraste */
-    --secondary: 154 165 177; /* #9AA5B1 - Cinza médio */
-    --secondary-foreground: 46 58 89; /* #2E3A59 - Cinza escuro */
-    --muted: 243 246 249; /* #F3F6F9 - Cinza azulado claro */
-    --muted-foreground: 75 108 139; /* #4B6C8B - Azul acinzentado */
-    --accent: 75 108 139; /* #4B6C8B - Azul acinzentado */
-    --accent-foreground: 255 255 255; /* Branco para contraste */
-    --destructive: 215 122 122; /* #D77A7A - Vermelho suave */
-    --destructive-foreground: 255 255 255; /* Branco para contraste */
-    --border: 225 225 230; /* Cinza claro para bordas */
-    --input: 225 225 230; /* Cinza claro para inputs */
-    --ring: 121 157 122; /* #799D7A - Verde oliva para foco */
-    --chart-1: 121 157 122; /* #799D7A */
-    --chart-2: 75 108 139; /* #4B6C8B */
-    --chart-3: 154 165 177; /* #9AA5B1 */
-    --chart-4: 215 122 122; /* #D77A7A */
-    --chart-5: 243 246 249; /* #F3F6F9 */
-    
-    /* Gradientes sutis */
-    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)));
-    --gradient-muted: linear-gradient(180deg, hsl(var(--background)), hsl(var(--muted)));
-    
-    /* Sombras elegantes */
-    --shadow-soft: 0 4px 12px hsl(var(--muted-foreground) / 0.1);
-    --shadow-hover: 0 8px 24px hsl(var(--muted-foreground) / 0.15);
-    
-    /* Transições suaves */
-    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-fast: all 0.15s ease-out;
-    
-    --radius: 12px;
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
 
-    --sidebar-background: 255 255 255;
-    --sidebar-foreground: 46 58 89;
-    --sidebar-primary: 121 157 122;
-    --sidebar-primary-foreground: 255 255 255;
-    --sidebar-accent: 243 246 249;
-    --sidebar-accent-foreground: 46 58 89;
-    --sidebar-border: 225 225 230;
-    --sidebar-ring: 121 157 122;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    /* Hunters brand colors - vibrant and modern */
+    --primary: 271 91% 65%; /* Deep purple/violet */
+    --primary-foreground: 0 0% 98%;
+    --primary-light: 271 91% 75%;
+    --primary-dark: 271 91% 55%;
+
+    --secondary: 199 89% 48%; /* Electric blue */
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 220 14.3% 95.9%;
+    --muted-foreground: 220 8.9% 46.1%;
+
+    --accent: 271 91% 65%;
+    --accent-foreground: 0 0% 98%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 271 91% 65%;
+
+    --radius: 0.75rem;
+
+    /* Hunters gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(271 91% 65%), hsl(199 89% 48%));
+    --gradient-card: linear-gradient(135deg, hsl(271 91% 65% / 0.05), hsl(199 89% 48% / 0.05));
+    --gradient-hero: linear-gradient(135deg, hsl(271 91% 65% / 0.9), hsl(199 89% 48% / 0.9));
+
+    /* Hunters shadows */
+    --shadow-primary: 0 10px 30px -10px hsl(271 91% 65% / 0.3);
+    --shadow-card: 0 4px 12px -2px hsl(220 13% 91% / 0.4);
+    --shadow-glow: 0 0 40px hsl(271 91% 65% / 0.3);
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 271 91% 65%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 271 91% 65%;
   }
 
   .dark {
-    --background: 31 31 40; /* #1F1F28 - Fundo escuro */
-    --foreground: 240 240 240; /* #F0F0F0 - Texto claro */
-    --card: 40 40 48; /* Cinza escuro para cards */
-    --card-foreground: 240 240 240; /* #F0F0F0 */
-    --popover: 40 40 48; /* Cinza escuro */
-    --popover-foreground: 240 240 240; /* #F0F0F0 */
-    --primary: 121 157 122; /* #799D7A - Mantém verde oliva */
-    --primary-foreground: 255 255 255;
-    --secondary: 64 64 72; /* Cinza escuro */
-    --secondary-foreground: 240 240 240;
-    --muted: 40 40 48; /* Cinza escuro */
-    --muted-foreground: 154 165 177; /* #9AA5B1 */
-    --accent: 75 108 139; /* #4B6C8B - Azul acinzentado */
-    --accent-foreground: 240 240 240;
-    --destructive: 215 122 122; /* #D77A7A */
-    --destructive-foreground: 240 240 240;
-    --border: 64 64 72; /* Cinza escuro para bordas */
-    --input: 64 64 72; /* Cinza escuro para inputs */
-    --ring: 121 157 122; /* #799D7A */
+    --background: 224 71% 4%;
+    --foreground: 213 31% 91%;
 
-    --sidebar-background: 40 40 48;
-    --sidebar-foreground: 240 240 240;
-    --sidebar-primary: 121 157 122;
-    --sidebar-primary-foreground: 255 255 255;
-    --sidebar-accent: 64 64 72;
-    --sidebar-accent-foreground: 240 240 240;
-    --sidebar-border: 64 64 72;
-    --sidebar-ring: 121 157 122;
+    --card: 224 71% 4%;
+    --card-foreground: 213 31% 91%;
+
+    --popover: 224 71% 4%;
+    --popover-foreground: 213 31% 91%;
+
+    --primary: 271 91% 65%;
+    --primary-foreground: 0 0% 98%;
+    --primary-light: 271 91% 75%;
+    --primary-dark: 271 91% 55%;
+
+    --secondary: 199 89% 48%;
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 223 47% 11%;
+    --muted-foreground: 215.4 16.3% 56.9%;
+
+    --accent: 271 91% 65%;
+    --accent-foreground: 0 0% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 223 47% 11%;
+    --input: 223 47% 11%;
+    --ring: 271 91% 65%;
+
+    /* Dark mode gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(271 91% 65%), hsl(199 89% 48%));
+    --gradient-card: linear-gradient(135deg, hsl(271 91% 65% / 0.1), hsl(199 89% 48% / 0.1));
+    --gradient-hero: linear-gradient(135deg, hsl(271 91% 65% / 0.8), hsl(199 89% 48% / 0.8));
+
+    --shadow-primary: 0 10px 30px -10px hsl(271 91% 65% / 0.5);
+    --shadow-card: 0 4px 12px -2px hsl(0 0% 0% / 0.3);
+    --shadow-glow: 0 0 40px hsl(271 91% 65% / 0.4);
+
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 271 91% 65%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 271 91% 65%;
   }
 }
 
@@ -94,27 +116,8 @@ All colors MUST be HSL.
   * {
     @apply border-border;
   }
+
   body {
-    @apply bg-background text-foreground font-sans;
-  }
-  
-  /* Tipografia personalizada */
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-heading font-semibold;
-  }
-  
-  /* Cards com sombra suave */
-  .card-modern {
-    @apply bg-card border border-border rounded-xl shadow-[var(--shadow-soft)] transition-[var(--transition-smooth)] hover:shadow-[var(--shadow-hover)];
-  }
-  
-  /* Botões com transições suaves */
-  .btn-smooth {
-    @apply transition-[var(--transition-smooth)] hover:scale-[1.02] active:scale-[0.98];
-  }
-  
-  /* Texto de dados (datas, locais) */
-  .text-data {
-    @apply font-mono text-sm text-muted-foreground;
+    @apply bg-background text-foreground;
   }
 }
