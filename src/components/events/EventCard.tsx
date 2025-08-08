@@ -35,9 +35,9 @@ export const EventCard = ({ event, onClick }: EventCardProps) => {
       className="cursor-pointer hover:shadow-lg transition-all duration-200 hover:-translate-y-1"
       onClick={onClick}
     >
-      <CardContent className="p-4 space-y-3">
+      <CardContent className="p-4 space-y-2 leading-[1.4]">
         <div className="flex items-start justify-between">
-          <h3 className="font-semibold text-lg line-clamp-2">{event.name}</h3>
+          <h3 className="font-bold text-xl line-clamp-2">{event.name}</h3>
           <div className="flex flex-col gap-1 ml-2 shrink-0">
             <Badge variant="secondary">
               {event.sport_type}
@@ -60,17 +60,17 @@ export const EventCard = ({ event, onClick }: EventCardProps) => {
         </p>
         
         <div className="space-y-2">
-          <div className="flex items-center text-sm text-muted-foreground">
+          <div className="flex items-center text-base leading-[1.4] text-muted-foreground">
             <Calendar className="h-4 w-4 mr-2" />
             {format(eventDate, "dd/MM/yyyy 'às' HH:mm", { locale: ptBR })}
           </div>
           
-          <div className="flex items-center text-sm text-muted-foreground">
+          <div className="flex items-center text-base leading-[1.4] text-muted-foreground">
             <MapPin className="h-4 w-4 mr-2" />
             {event.location}
           </div>
           
-          <div className="flex items-center text-sm text-muted-foreground">
+          <div className="flex items-center text-base leading-[1.4] text-muted-foreground">
             <Users className="h-4 w-4 mr-2" />
             {event.current_participants}/{event.max_participants} participantes
           </div>

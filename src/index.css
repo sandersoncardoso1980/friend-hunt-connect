@@ -18,7 +18,7 @@ All colors MUST be HSL.
     --popover-foreground: 222.2 84% 4.9%;
 
     /* Hunters brand colors - vibrant and modern */
-    --primary: 271 91% 65%; /* Deep purple/violet */
+    --primary: 211 100% 50%; /* Brand blue (#007BFF) */
     --primary-foreground: 0 0% 98%;
     --primary-light: 271 91% 75%;
     --primary-dark: 271 91% 55%;
@@ -37,9 +37,9 @@ All colors MUST be HSL.
 
     --border: 220 13% 91%;
     --input: 220 13% 91%;
-    --ring: 271 91% 65%;
+    --ring: 211 100% 50%;
 
-    --radius: 0.75rem;
+    --radius: 1rem;
 
     /* Hunters gradients */
     --gradient-primary: linear-gradient(135deg, hsl(271 91% 65%), hsl(199 89% 48%));
@@ -71,7 +71,7 @@ All colors MUST be HSL.
     --popover: 224 71% 4%;
     --popover-foreground: 213 31% 91%;
 
-    --primary: 271 91% 65%;
+    --primary: 211 100% 50%;
     --primary-foreground: 0 0% 98%;
     --primary-light: 271 91% 75%;
     --primary-dark: 271 91% 55%;
@@ -90,7 +90,7 @@ All colors MUST be HSL.
 
     --border: 223 47% 11%;
     --input: 223 47% 11%;
-    --ring: 271 91% 65%;
+    --ring: 211 100% 50%;
 
     /* Dark mode gradients */
     --gradient-primary: linear-gradient(135deg, hsl(271 91% 65%), hsl(199 89% 48%));

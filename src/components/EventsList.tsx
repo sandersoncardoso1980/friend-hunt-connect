@@ -104,25 +104,25 @@ export const EventsList = () => {
         <Card key={event.id} className="hover:shadow-lg transition-shadow">
           <CardHeader>
             <div className="flex items-start justify-between">
-              <CardTitle className="text-lg">{event.name}</CardTitle>
+              <CardTitle className="text-xl font-bold">{event.name}</CardTitle>
               <Badge variant="secondary">{event.sport_type}</Badge>
             </div>
             <CardDescription>{event.description}</CardDescription>
           </CardHeader>
-          <CardContent className="space-y-3">
-            <div className="flex items-center text-sm text-muted-foreground">
+          <CardContent className="space-y-2 leading-[1.4]">
+            <div className="flex items-center text-base leading-[1.4] text-muted-foreground">
               <Calendar className="w-4 h-4 mr-2" />
               {new Date(event.event_date).toLocaleDateString('pt-BR')}
             </div>
-            <div className="flex items-center text-sm text-muted-foreground">
+            <div className="flex items-center text-base leading-[1.4] text-muted-foreground">
               <Clock className="w-4 h-4 mr-2" />
               {event.event_time}
             </div>
-            <div className="flex items-center text-sm text-muted-foreground">
+            <div className="flex items-center text-base leading-[1.4] text-muted-foreground">
               <MapPin className="w-4 h-4 mr-2" />
               {event.location}
             </div>
-            <div className="flex items-center text-sm text-muted-foreground">
+            <div className="flex items-center text-base leading-[1.4] text-muted-foreground">
               <Users className="w-4 h-4 mr-2" />
               {event.current_participants || 0}/{event.max_participants} participantes
             </div>

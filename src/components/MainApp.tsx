@@ -18,6 +18,9 @@ export const MainApp = ({ user }: MainAppProps) => {
       
       <main className="container mx-auto px-4 py-6 space-y-6">
         <AdsCarousel />
+        <section aria-labelledby="upcoming-title" className="mt-2">
+          <h2 id="upcoming-title" className="text-2xl font-bold">Eventos próximos</h2>
+        </section>
         <EventsList />
       </main>
 

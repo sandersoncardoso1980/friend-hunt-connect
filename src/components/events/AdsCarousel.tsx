@@ -59,7 +59,7 @@ export const AdsCarousel = () => {
                 <img
                   src={ads[0].image_url}
                   alt={ads[0].title}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover object-center"
                 />
                 <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4">
                   <h3 className="text-white font-semibold text-lg">{ads[0].title}</h3>
@@ -108,7 +108,7 @@ export const AdsCarousel = () => {
                     <img
                       src={ad.image_url}
                       alt={ad.title}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover object-center"
                     />
                     <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4">
                       <h3 className="text-white font-semibold text-lg">{ad.title}</h3>
